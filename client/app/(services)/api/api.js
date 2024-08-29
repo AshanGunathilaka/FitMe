@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://stale-flies-knock.loca.lt";
+const BASE_URL = "https://salty-wolves-kneel.loca.lt";
 
 export const registerUser = async (user) => {
   console.log(user);
