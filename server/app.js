@@ -5,7 +5,7 @@ const errorHandler = require("./middlewares/errorHandler");
 const app = express();
 //! Connect to mongodb
 mongoose
-  .connect("mongodb://localhost:27017/")
+  .connect("mongodb+srv://eshmika2020:FitMe@fitme.5kkpf.mongodb.net/")
   .then(() => console.log("Db connected successfully"))
   .catch((e) => console.log(e));
 

@@ -29,6 +29,7 @@ npm i @reduxjs/toolkit
 npm i react-redux
 npm i @react-native-async-storage/async-storage
 npm install @react-native-community/datetimepicker
+npm install react-native-ratings
 ```
 ```bash
 cd client
