@@ -2,12 +2,16 @@
 /* If You want to help us please go here https://www.rnexamples.com/help-us */
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Image, Alert, ScrollView } from 'react-native'
+import { useRouter } from 'expo-router';
+
 
 export default ProductDetail = () => {
+  const router = useRouter();
   const clickEventListener = () => {
-    Alert.alert('Success', 'Product has beed added to cart')
+    router.push("../payment/checkout");
+   
   }
-
+ 
   return (
     <View style={styles.container}>
     <ScrollView>
@@ -22,7 +26,8 @@ export default ProductDetail = () => {
         This elegant blouse is crafted from soft, breathable fabric, designed to provide comfort without compromising style. Featuring a flattering silhouette, this blouse has delicate details like subtle pleats and a feminine neckline, perfect for both casual and formal occasions.
         </Text>
       </View>
-   
+
+      
         <View style={styles.starContainer}>
           <Image
             style={styles.star}
@@ -78,6 +83,11 @@ export default ProductDetail = () => {
           <TouchableOpacity style={styles.shareButton} onPress={() => clickEventListener()}>
             <Text style={styles.shareButtonText}>Pay Now</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.feedbackButton} onPress={() => router.push("../feedback/feedback")}>
+        <Text style={styles.feedbackButtonText}>Feedback</Text>
+      </TouchableOpacity>
+
         </View>
       </ScrollView>
     </View>
@@ -183,5 +193,20 @@ const styles = StyleSheet.create({
   },
   addToCarContainer: {
     marginHorizontal: 30,
+  },
+  feedbackButton: {
+    backgroundColor: "#4CAF50",
+    padding: 10,
+    borderColor: "#ffffff",
+    borderRadius: 8,
+    alignItems: "center",
+    borderWidth: 2,
+    marginTop: 20,
+    alignSelf: "center",
+  },
+  feedbackButtonText: {
+    color: "#FFF",
+    fontSize: 14,
+    fontWeight: "bold",
   },
 })

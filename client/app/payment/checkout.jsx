@@ -1,178 +1,192 @@
-/* This file has been downloaded from rnexamples.com */
-/* If You want to help us please go here https://www.rnexamples.com/help-us */
-import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, Image, Alert, ScrollView } from 'react-native'
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'; // Added TouchableOpacity
+import { useRouter } from 'expo-router';
 
-export default ProductDetail = () => {
-  const clickEventListener = () => {
-    Alert.alert('Success', 'Product has beed added to cart')
-  }
+
+export default InvoiceView = () => {
+
+  const router = useRouter();
+  const today = new Date().toLocaleDateString(); 
+
+  const invoiceData = {
+    invoiceNumber: '920',
+    invoiceDate: today,
+    customerName: 'Ashan Gunathilaka',
+    customerEmail: 'ashangunathilaka@gmail.com',
+    customerAddress: 'New Kandy Road, Malabe',
+    items: [
+      {
+        id: 1,
+        name: 'Blouse',
+        quantity: 1,
+        price: 2500.00,
+        total: 2500.00,
+      },
+    ],
+    deliveryCharge: 750.00,  // Added delivery charge
+    subtotal: 2500.00,
+    total: 3250.00,
+  };
+
+  invoiceData.total = invoiceData.subtotal + invoiceData.deliveryCharge; // Calculate the total
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <View style={{ alignItems: 'center', marginHorizontal: 30 }}>
-          <Image
-            style={styles.productImg}
-            source={{
-              uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3v7KDJN7TAoJa5sFaPWcp1HX8JFcpF3z5K3ngz4L6kWoEP7Ca',
-            }}
-          />
-          <Text style={styles.name}>Super Soft T-Shirt</Text>
-          <Text style={styles.price}>$ 12.22</Text>
-          <Text style={styles.description}>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-            dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-            nascetur ridiculus mus. Donec quam felis, ultricies nec
-          </Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>Invoice</Text>
+      </View>
+      <View style={styles.invoiceInfoContainer}>
+        <View style={styles.invoiceInfo}>
+          <Text style={styles.label}>Invoice Number:</Text>
+          <Text style={styles.text}>{invoiceData.invoiceNumber}</Text>
         </View>
-        <View style={styles.starContainer}>
-          <Image
-            style={styles.star}
-            source={{ uri: 'https://img.icons8.com/color/40/000000/star.png' }}
-          />
-          <Image
-            style={styles.star}
-            source={{ uri: 'https://img.icons8.com/color/40/000000/star.png' }}
-          />
-          <Image
-            style={styles.star}
-            source={{ uri: 'https://img.icons8.com/color/40/000000/star.png' }}
-          />
-          <Image
-            style={styles.star}
-            source={{ uri: 'https://img.icons8.com/color/40/000000/star.png' }}
-          />
-          <Image
-            style={styles.star}
-            source={{ uri: 'https://img.icons8.com/color/40/000000/star.png' }}
-          />
+        <View style={styles.invoiceInfo}>
+          <Text style={styles.label}>Invoice Date:</Text>
+          <Text style={styles.text}>{invoiceData.invoiceDate}</Text>
         </View>
-        <View style={styles.contentColors}>
-          <TouchableOpacity
-            style={[styles.btnColor, { backgroundColor: '#00BFFF' }]}></TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.btnColor, { backgroundColor: '#FF1493' }]}></TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.btnColor, { backgroundColor: '#00CED1' }]}></TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.btnColor, { backgroundColor: '#228B22' }]}></TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.btnColor, { backgroundColor: '#20B2AA' }]}></TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.btnColor, { backgroundColor: '#FF4500' }]}></TouchableOpacity>
+      </View>
+      <View style={styles.divider} />
+      <View style={styles.customerInfoContainer}>
+        <Text style={styles.subtitle}>Customer Information</Text>
+        <View style={styles.customerInfo}>
+          <Text style={styles.label}>Name:</Text>
+          <Text style={styles.text}>{invoiceData.customerName}</Text>
         </View>
-        <View style={styles.contentSize}>
-          <TouchableOpacity style={styles.btnSize}>
-            <Text>S</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btnSize}>
-            <Text>M</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btnSize}>
-            <Text>L</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btnSize}>
-            <Text>XL</Text>
-          </TouchableOpacity>
+        <View style={styles.customerInfo}>
+          <Text style={styles.label}>Email:</Text>
+          <Text style={styles.text}>{invoiceData.customerEmail}</Text>
         </View>
-        <View style={styles.separator}></View>
-        <View style={styles.addToCarContainer}>
-          <TouchableOpacity style={styles.shareButton} onPress={() => clickEventListener()}>
-            <Text style={styles.shareButtonText}>Add To Cart</Text>
-          </TouchableOpacity>
+        <View style={styles.customerInfo}>
+          <Text style={styles.label}>Address:</Text>
+          <Text style={styles.text}>{invoiceData.customerAddress}</Text>
         </View>
-      </ScrollView>
+      </View>
+      <View style={styles.divider} />
+      <View style={styles.itemsContainer}>
+        <Text style={styles.subtitle}>Invoice Items</Text>
+        {invoiceData.items.map((item) => (
+          <View style={styles.item} key={item.id}>
+            <Text style={styles.itemName}>{item.name}</Text>
+            <Text style={styles.itemDetails}>
+              {item.quantity} x RS {item.price.toFixed(2)}
+            </Text>
+            <Text style={styles.itemTotal}>RS {item.total.toFixed(2)}</Text>
+          </View>
+        ))}
+      </View>
+      <View style={styles.divider} />
+      <View style={styles.totalContainer}>
+        <View style={styles.invoiceSummary}>
+          <Text style={styles.label}>Subtotal:</Text>
+          <Text style={styles.total}>RS {invoiceData.subtotal.toFixed(2)}</Text>
+        </View>
+        <View style={styles.invoiceSummary}>
+          <Text style={styles.label}>Delivery Charge:</Text>
+          <Text style={styles.total}>RS {invoiceData.deliveryCharge.toFixed(2)}</Text>
+        </View>
+        <View style={styles.invoiceSummary}>
+          <Text style={styles.label}>Total:</Text>
+          <Text style={styles.total}>RS {invoiceData.total.toFixed(2)}</Text>
+        </View>
+      </View>
+      
+      {/* Added Button */}
+      <View style={styles.buttons}>
+        <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => router.push("../payment/CardPayment")}>
+          <Text style={styles.buttonText}>Buy Now</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: 20,
+    padding: 20,
+    marginTop: 40,
+    backgroundColor: '#7393B3',
   },
-  productImg: {
-    width: 200,
-    height: 200,
+  header: {
+    alignItems: 'center',
   },
-  name: {
-    fontSize: 28,
-    color: '#696969',
+  title: {
+    fontSize: 24,
     fontWeight: 'bold',
   },
-  price: {
-    marginTop: 10,
+  invoiceInfoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  invoiceInfo: {
+    flexDirection: 'row',
+  },
+  label: {
+    fontWeight: 'bold',
+  },
+  text: {
+    marginLeft: 5,
+  },
+  divider: {
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    marginVertical: 20,
+  },
+  customerInfoContainer: {
+    marginTop: 20,
+  },
+  customerInfo: {
+    flexDirection: 'row',
+    marginVertical: 5,
+  },
+  subtitle: {
     fontSize: 18,
-    color: 'green',
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  itemsContainer: {
+    marginTop: 20,
+  },
+  item: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 5,
+  },
+  itemName: {
+    fontSize: 16,
+  },
+  itemTotal: {
     fontWeight: 'bold',
   },
-  description: {
-    textAlign: 'center',
-    marginTop: 10,
-    color: '#696969',
+  totalContainer: {
+    marginTop: 20,
   },
-  star: {
-    width: 40,
-    height: 40,
+  invoiceSummary: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 5,
   },
-  btnColor: {
-    height: 30,
-    width: 30,
-    borderRadius: 30,
-    marginHorizontal: 3,
+  total: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
-  btnSize: {
-    height: 40,
-    width: 40,
-    borderRadius: 40,
-    borderColor: '#778899',
-    borderWidth: 1,
-    marginHorizontal: 3,
-    backgroundColor: 'white',
+  buttons: {
+    marginTop: 40,
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: '#FFC107',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  
+});
 
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  starContainer: {
-    justifyContent: 'center',
-    marginHorizontal: 30,
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  contentColors: {
-    justifyContent: 'center',
-    marginHorizontal: 30,
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  contentSize: {
-    justifyContent: 'center',
-    marginHorizontal: 30,
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  separator: {
-    height: 2,
-    backgroundColor: '#eeeeee',
-    marginTop: 20,
-    marginHorizontal: 30,
-  },
-  shareButton: {
-    marginTop: 10,
-    height: 45,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 30,
-    backgroundColor: '#00BFFF',
-  },
-  shareButtonText: {
-    color: '#FFFFFF',
-    fontSize: 20,
-  },
-  addToCarContainer: {
-    marginHorizontal: 30,
-  },
-})
