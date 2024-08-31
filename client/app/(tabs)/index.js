@@ -1,14 +1,28 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { useRouter } from 'expo-router';
 // import { LinearGradient } from "expo-linear-gradient";
 // import Icon from "react-native-vector-icons/FontAwesome";
 // import Fontisto from "@expo/vector-icons/Fontisto";
 
 const TabHome = () => {
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Hello</Text>
+
+      <View style={styles.buttons}>
+        <TouchableOpacity
+        style={styles.button}
+        onPress={() => router.push("../delivery/delivery")}
+        >
+        <Text style={styles.buttonText}>Pay</Text>
+        </TouchableOpacity>
+        
+      </View>
     </View>
+
+
   );
 };
 
@@ -56,6 +70,27 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#fff",
     marginLeft: 10,
+    fontWeight: "bold",
+  },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",    
+    left: 0,
+    right: 0,
+    marginTop: 250,
+  },
+  button: {
+    backgroundColor: "#6200ea",
+    paddingVertical: 12,
+    width: 150,
+    borderRadius: 25,
+    elevation: 3,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
     fontWeight: "bold",
   },
 });
