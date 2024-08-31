@@ -18,6 +18,12 @@ const TabHome = () => {
         >
         <Text style={styles.buttonText}>Pay</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+        style={styles.button}
+        onPress={() => router.push("../feedback/feedback")}
+        >
+        <Text style={styles.buttonText}>Feeback</Text>
+        </TouchableOpacity>
         
       </View>
     </View>
