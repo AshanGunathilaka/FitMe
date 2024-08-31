@@ -1,102 +1,151 @@
-import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React from 'react';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-// import { LinearGradient } from "expo-linear-gradient";
-// import Icon from "react-native-vector-icons/FontAwesome";
-// import Fontisto from "@expo/vector-icons/Fontisto";
+const items = [
+  {
+    id: 1,
+    name: 'Jacket',
+    price: 2500.00,
+    image: require('../assets/jacket.jpg'), 
+  },
+  {
+    id: 2,
+    name: 'Trouser',
+    price: 6000.00,
+    image: require('../assets/Trouser.jpg'),
+  },
+  {
+    id: 3,
+    name: 'Frock',
+    price: 2000.00,
+    image: require('../assets/Frock.jpg'), 
+  },
+  {
+    id: 4,
+    name: 'Skirt',
+    price: 3500.00,
+    image: require('../assets/Blouse.jpg'), 
+  },
 
-const TabHome = () => {
+  
+];
+
+
+
+const GroceryDeliveryApp = () => {
   const router = useRouter();
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Hello</Text>
+      <Text style={styles.title}>Clothes List</Text>
+      <FlatList
+        data={items}
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <View style={styles.item}>
+              {
+                item.image ? (
+                  <Image 
+                    source={typeof item.image === 'string' ? { uri: item.image } : item.image} 
+                    style={styles.itemImage} 
+                  />
+                ) : (
+                  <Text>No Image Available</Text>
+                )
+              }
+              <View style={styles.itemContent}>
+                <Text style={styles.itemName}>{item.name}</Text>
+                <Text style={styles.itemPrice}>RS {item.price.toFixed(2)}</Text>
+              </View>
+            </View>
+            <View style={styles.buttons}>
+              <TouchableOpacity style={styles.button}
+              onPress={() => router.push("../ItemDetails/blouse")}>
+                <Text style={styles.buttonText}
+                 >View Details</Text>
+              </TouchableOpacity>
 
-      <View style={styles.buttons}>
-        <TouchableOpacity
-        style={styles.button}
-        onPress={() => router.push("../delivery/delivery")}
-        >
-        <Text style={styles.buttonText}>Pay</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-        style={styles.button}
-        onPress={() => router.push("../feedback/feedback")}
-        >
-        <Text style={styles.buttonText}>Feeback</Text>
-        </TouchableOpacity>
-        
-      </View>
+              <TouchableOpacity style={styles.button}
+              onPress={() => router.push("../payment/checkout")}>
+                <Text style={styles.buttonText}>Buy Now</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+        keyExtractor={item => item.id.toString()}
+      />
     </View>
-
-
   );
 };
-
-export default TabHome;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: '#7393B3',
+  },
+  backgroundImage: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    resizeMode: 'cover',
   },
   title: {
-    fontSize: 32,
-    fontWeight: "bold",
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 50,
     marginBottom: 20,
-    textAlign: "center",
-    color: "#333",
+    color: '#fff',
+    marginHorizontal: 20,
   },
-  subtitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 20,
-    textAlign: "center",
-    color: "#666",
-  },
-  techList: {
-    flexDirection: "column",
-    alignItems: "center",
-    width: "100%",
-  },
-  techItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "90%",
-    paddingVertical: 15,
-    paddingHorizontal: 10,
+  card: {
+    marginHorizontal: 20,
+    backgroundColor: '#fff',
     borderRadius: 10,
-    marginBottom: 15,
-    elevation: 5,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 2,
+    marginBottom: 20,
   },
-  techText: {
-    fontSize: 18,
-    color: "#fff",
-    marginLeft: 10,
-    fontWeight: "bold",
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  itemImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 20,
+  },
+  itemContent: {
+    flex: 1,
+  },
+  itemName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  itemPrice: {
+    fontSize: 16,
+    color: '#999',
   },
   buttons: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",    
-    left: 0,
-    right: 0,
-    marginTop: 250,
+    flexDirection: 'row',
   },
   button: {
-    backgroundColor: "#6200ea",
-    paddingVertical: 12,
-    width: 150,
-    borderRadius: 25,
-    elevation: 3,
-    alignItems: "center",
+    backgroundColor: '#FFC107',
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
   },
   buttonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
+
+export default GroceryDeliveryApp;
