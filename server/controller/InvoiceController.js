@@ -1,8 +1,8 @@
-const OnlineModel = require('../model/OnlinePayments');
+const Invoicemodel = require('../model/Invoice');
 const asyncHandler = require("express-async-handler");
 
  //create online
-const createonline = (req, res) => {
+const createinvoice = (req, res) => {
    
 
    
@@ -12,9 +12,9 @@ const createonline = (req, res) => {
 
 const userCtrl = {
   //!Register
-  createonline: asyncHandler(async (req, res) => {
+  createinvoice: asyncHandler(async (req, res) => {
    
-    OnlineModel.create(req.body)
+    Invoicemodel.create(req.body)
 
     .then((data)=>{
       res.json(data);
