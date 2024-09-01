@@ -13,6 +13,7 @@ mongoose
 app.use(express.json()); //pass incoming json data from the user
 //!Routes
 app.use("/", router);
+app.use("/", require("./routes/paymentR"));
 //!error handler
 app.use(errorHandler);
 //! Start the server

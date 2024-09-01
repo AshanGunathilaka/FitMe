@@ -1,16 +1,11 @@
-const OnlineModel = require('../models/OnlinePayments');
+const OnlineModel = require('../model/OnlinePayments');
 const asyncHandler = require("express-async-handler");
 
  //create online
 const createonline = (req, res) => {
-    OnlineModel.create(req.body)
+   
 
-    .then((data)=>{
-        res.json(data);
-    })
-    .catch((err) =>{
-        res.json(err);
-    })
+   
 }
 
 
@@ -19,17 +14,26 @@ const userCtrl = {
   //!Register
   createonline: asyncHandler(async (req, res) => {
    
-    const userCreated = await User.create({
-      password: hashedPassword,
-      email,
-    });
+    // const userCreated = await User.create({
+    //   password: hashedPassword,
+    //   email,
+    // });
+
+    OnlineModel.create(req.body)
+
+    .then((data)=>{
+      res.json(data);
+    })
+    .catch((err) =>{
+        res.json(err);
+    })
     
-    console.log("userCreated", userCreated);
-    res.json({
-      username: userCreated.username,
-      email: userCreated.email,
-      id: userCreated.id,
-    });
+    // console.log("userCreated", userCreated);
+    // res.json({
+    //   username: userCreated.username,
+    //   email: userCreated.email,
+    //   id: userCreated.id,
+    // });
   }),
 
   //!Login
