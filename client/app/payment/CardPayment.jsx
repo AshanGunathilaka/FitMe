@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,40 +7,76 @@ import {
   Image,
   StyleSheet,
   ScrollView,
-  Alert, // Import Alert
+  Alert,
 } from "react-native";
 import { useRouter } from 'expo-router';
+import axios from 'axios'; // Ensure axios is imported
 
 export default function PaymentSettings() {
-    const router = useRouter();
+  const router = useRouter();
 
-    const handleConfirm = () => {
-        Alert.alert(
-            "Confirmation",
-            "Do you want to confirm or not?",
-            [
-                {
-                    text: "Cancel",
-                    onPress: () => {
-                        console.log("Payment Cancelled");
-                        router.push("../ItemDetails/blouse"); // Correct navigation call for Cancel
-                    },
-                    style: "cancel",
-                },
-                {
-                    text: "Confirm",
-                    onPress: () => {
-                        console.log("Payment Confirmed");
-                        router.push("../ItemDetails/blouse"); // Correct navigation call for Confirm
-                    },
-                },
-            ]
-        );
-    };
+  const [cardname, setCardname] = useState('');
+  const [cardnumber, setCardnumber] = useState('');
+  const [expiredate, setExpiredate] = useState('');
+  const [securitycode, setSecuritycode] = useState('');
 
-    return (
-        <ScrollView style={styles.container}>
-            <View style={styles.header}>
+  const handleConfirm = () => {
+
+    if (!cardnumber.trim()) {
+        // Check if cardnumber is empty
+        Alert.alert("Validation Error", "Card number is required.");
+        return; // Exit the function if card number is empty
+      }
+      
+    Alert.alert(
+      "Confirmation",
+      "Do you want to confirm or not?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {
+            console.log("Payment Cancelled");
+            router.push("/(tabs)");
+          },
+          style: "cancel",
+        },
+        {
+          text: "Confirm",
+          onPress: () => {
+            console.log("Payment Confirmed");
+            submitPayment(); // Call the submit function on Confirm
+            router.push("/(tabs)");
+          },
+        },
+      ]
+    );
+  };
+
+  const submitPayment = () => {
+    axios
+      .post('http://192.168.173.21:8000/pay/create', {
+        cardname: cardname,
+        cardnumber: cardnumber,
+        expiredate: expiredate,
+        securitycode: securitycode,
+      })
+      .then((response) => {
+        console.log("Response: ", response.data);
+        Alert.alert("Success", "Payment processed successfully!");
+  
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+        Alert.alert("Error", "Payment failed. Please try again.");
+
+      });
+  };
+
+  return (
+    <ScrollView style={styles.container}>
+      
+
+      <View style={styles.header}>
                 <Text style={styles.title}>Payment</Text>
             </View>
             <Text style={styles.sectionTitle}>Saved cards:</Text>
@@ -79,46 +115,104 @@ export default function PaymentSettings() {
                 </TouchableOpacity>
             </View>
 
-            <Text style={styles.sectionTitle}>Add Card Details:</Text>
+      <Text style={styles.sectionTitle}>Add Card Details:</Text>
 
-            <TextInput
-                style={styles.input}
-                placeholder="Cardholder's Name"
-                
-            />
+      <TextInput
+        style={styles.input}
+        placeholder="Cardholder's Name"
+        value={cardname}
+        onChangeText={setCardname} // Correct usage for React Native
+      />
 
-            <TextInput
-                style={[styles.input, styles.largeInput]}
-                placeholder="Card Number"
-               
-            />
+      <TextInput
+        style={[styles.input, styles.largeInput]}
+        placeholder="Card Number"
+        value={cardnumber}
+        onChangeText={setCardnumber} // Correct usage for React Native
+        keyboardType="numeric"
+      />
 
-            <View style={styles.row}>
-                <TextInput
-                    style={[styles.input, styles.mediumInput]}
-                    placeholder="MM/YYYY"
-                    secureTextEntry={true}
-                />
-                <TextInput
-                    style={[styles.input, styles.smallInput]}
-                    placeholder="CVV"
-                    secureTextEntry={true}
-                />
-            </View>
+      <View style={styles.row}>
+        <TextInput
+          style={[styles.input, styles.mediumInput]}
+          placeholder="MM/YYYY"
+          value={expiredate}
+          onChangeText={setExpiredate} 
+           keyboardType="numeric"// Correct usage for React Native
+        />
+        <TextInput
+          style={[styles.input, styles.smallInput]}
+          placeholder="CVV"
+          value={securitycode}
+          onChangeText={setSecuritycode} // Correct usage for React Native
+          secureTextEntry={true}
+          keyboardType="numeric"
+        />
+      </View>
 
-            <TouchableOpacity style={styles.addButton} onPress={handleConfirm}>
-                <Text style={styles.addButtonText}>Pay Now</Text>
-            </TouchableOpacity>
-        </ScrollView>
-    );
+      <TouchableOpacity style={styles.addButton} onPress={handleConfirm}>
+        <Text style={styles.addButtonText}>Pay Now</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-        backgroundColor: "#7393B3",
-    },
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#7393B3",
+  },
+  header: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  sectionTitle: {
+    marginTop: 30,
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 30,
+  },
+  input: {
+    backgroundColor: "#FFF",
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 15,
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  largeInput: {
+    flex: 7,
+    marginBottom: 10,
+  },
+  mediumInput: {
+    flex: 3,
+    marginTop: 10,
+  },
+  smallInput: {
+    flex: 2,
+    marginLeft: 10,
+    marginTop: 10,
+  },
+  addButton: {
+    backgroundColor: "red",
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  addButtonText: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+
     header: {
         alignItems: "center",
         marginBottom: 20,

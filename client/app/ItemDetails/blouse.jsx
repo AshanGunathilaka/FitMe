@@ -8,7 +8,7 @@ import { useRouter } from 'expo-router';
 export default ProductDetail = () => {
   const router = useRouter();
   const clickEventListener = () => {
-    router.push("../payment/checkout");
+    router.push("../delivery/delivery");
    
   }
  
@@ -84,7 +84,7 @@ export default ProductDetail = () => {
             <Text style={styles.shareButtonText}>Pay Now</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.feedbackButton} onPress={() => router.push("../feedback/feedback")}>
+          <TouchableOpacity style={styles.feedbackButton} onPress={() => router.push("../payment/checkout")}>
         <Text style={styles.feedbackButtonText}>Feedback</Text>
       </TouchableOpacity>
 

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from 'expo-router';
 import {
   View,
   StyleSheet,
@@ -21,6 +22,9 @@ const FormSchema = Yup.object().shape({
 });
 
 export default function SimpleForm() {
+  const router = useRouter();
+
+  
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -173,12 +177,16 @@ export default function SimpleForm() {
               <Text style={styles.errorText}>{errors.notes}</Text>
             ) : null}
 
-            <TouchableOpacity
-              style={styles.button}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.buttonText}>Submit</Text>
-            </TouchableOpacity>
+<TouchableOpacity
+  style={styles.button}
+  onPress={() => {
+    handleSubmit(); // Submit the form
+    router.push("../payment/checkout"); // Navigate to the desired route after submission
+  }}
+>
+  <Text style={styles.buttonText}>Submit</Text>
+</TouchableOpacity>
+
           </View>
         )}
       </Formik>
