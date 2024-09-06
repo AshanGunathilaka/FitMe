@@ -9,8 +9,9 @@ Backend
 cd server
 ```
 ```bash
-node --watch app
+npm start
 ```
+
 ```bash
 cd server
 ```
